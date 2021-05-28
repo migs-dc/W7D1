@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :require_login, only: [:new]
+
   def new 
     render :new
   end
@@ -11,8 +13,7 @@ class SessionsController < ApplicationController
     )
 
     if @user
-      login!(@user)
-      redirect_to cats_url
+      login_user!(@user)
     else
       render :new
     end

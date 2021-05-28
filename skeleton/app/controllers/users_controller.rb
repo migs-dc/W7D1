@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :require_login, only: [:new]
 
   def new
     render :new
@@ -6,8 +7,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      redirect_to user_url(@user)
+    # debugger
+    if @user.save!
+      login!(@user)
+      redirect_to cats_url
     else
       render :new
     end
