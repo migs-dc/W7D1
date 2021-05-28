@@ -1,4 +1,6 @@
 class CatsController < ApplicationController
+  before_action :require_owner, only: [:edit]
+
   def index
     @cats = Cat.all
     render :index
@@ -38,6 +40,15 @@ class CatsController < ApplicationController
       flash.now[:errors] = @cat.errors.full_messages
       render :edit
     end
+  end
+
+  def require_owner
+    debugger
+    redirect_to cats_url unless 
+    current_user.cats.any? do |cat| 
+      cat.id == params[:id] 
+    end
+    #add some error message or log them out
   end
 
   private
